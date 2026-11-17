@@ -1,0 +1,32 @@
+CREATE DATABASE IF NOT EXISTS nido_diseno
+CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE nido_diseno;
+
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(80) NOT NULL,
+    apellido VARCHAR(80) NOT NULL,
+    dni VARCHAR(8) NOT NULL UNIQUE,
+    email VARCHAR(120) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    rol ENUM('usuario','admin') NOT NULL DEFAULT 'usuario',
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    archivado_en DATETIME DEFAULT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS disenos (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT UNSIGNED NOT NULL,
+    titulo VARCHAR(120) NOT NULL,
+    ambiente VARCHAR(40) NOT NULL,
+    estilo VARCHAR(50) NOT NULL,
+    colores VARCHAR(120) NOT NULL,
+    presupuesto VARCHAR(60) NOT NULL,
+    descripcion TEXT NOT NULL,
+    imagen VARCHAR(255) DEFAULT NULL,
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    archivado_en DATETIME DEFAULT NULL,
+    CONSTRAINT fk_disenos_usuario FOREIGN KEY (usuario_id)
+        REFERENCES usuarios(id) ON UPDATE CASCADE
+) ENGINE=InnoDB;
